@@ -1,0 +1,38 @@
+body
+{
+	background-color:#bfbfbf;
+	margin:0px;
+}
+.digital
+{
+	font-family: digital;
+    font-size: 60px;
+    color: #c30808;
+    background-color: black;
+}
+.digital a
+{
+	text-decoration:none;
+	color: green;
+}
+.sarasas
+{
+    background-color: gainsboro;
+    width: 230px;
+    padding: 7px;
+    margin: auto;
+    margin-top: -18px;
+    border-radius: 0 0 7px 7px;
+}
+@font-face {
+    font-family: digital;
+    src: url("ddigital.ttf") format("truetype");
+}
+.h1
+{
+	color: black;
+    font-family: monospace;
+    font-size: 20px;
+    letter-spacing: -1px;
+    text-decoration: underline;
+}
