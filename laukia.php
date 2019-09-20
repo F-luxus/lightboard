@@ -2,7 +2,11 @@
 <html>
 <head>
 <title>Švieslentė</title>
+
 <link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<meta http-equiv="refresh" content="5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 </head>
 <body>
@@ -22,7 +26,7 @@ while ($row = mysqli_fetch_assoc($m)) {
 		$laukimas = $re['laukimas']-time();
 		if($laukimas >0)
 		{
-		echo "<center><div class=digital>$klientas - numatomas vizitas po $laukimas sek.</div></center><br>";		
+		echo "<center><div class=digital>$klientas - numatomas vizitas po ".laikas($laukimas)."</div></center><br>";		
 		}
 		elseif($laukimas <0)
 		{
@@ -43,7 +47,7 @@ while ($row = mysqli_fetch_assoc($m)) {
 echo "</div>";
 if(empty($laukimas))
 {
-echo "<center><div class=digital>Niekas nelaukia - galite <a href='https://nfq-siauliai.us.lt/index.php'>registruotis</a></div></center><br>";
+echo "<center><div class=digital>Niekas nelaukia - galite <a href='index.php'>registruotis</a></div></center><br>";
 }
 ?>
 

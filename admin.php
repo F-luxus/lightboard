@@ -3,9 +3,11 @@
 <head>
 <title>Specialisto puslapis</title>
 <link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
-
+<div class=turinys>
 <?php
 include("config.php");
 if (isset($_GET['id'])) {
@@ -19,7 +21,7 @@ if (isset($_GET['id'])) {
 	if($_GET['id']== "klientai"){
 		if(isset($_SESSION["specialistas"]))
 		{
-		echo "Laukiantys klientai: <br>";	
+		echo "<b>Laukiantys klientai:</b> <br>";	
 		$m = mysqli_query($db,"SELECT * FROM klientas ORDER BY laikas ASC");
 		while ($row = mysqli_fetch_assoc($m)) {
 			$klientas = $row['klientas'];
@@ -115,5 +117,6 @@ else
 <?	
 }
 ?>
+</div>
 </body>
 </html>

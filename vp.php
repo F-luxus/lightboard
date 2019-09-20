@@ -3,10 +3,13 @@
 <head>
 <title>Kliento valdymo panelė</title>
 <link rel="stylesheet" href="css/styles.css">
+<link rel="icon" href="favicon.ico" type="image/x-icon" />
 <meta http-equiv="refresh" content="5">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 </head>
 <body>
-
+<div class=turinys>
 <?php
 
 
@@ -33,14 +36,15 @@ if ($kliento_vardas == $id)
 		$laukimas = $re['laukimas']-time();
 		if($laukimas > 0)
 		{
-		echo "Sveiki, $kliento_vardas , Jūsų apytikslis laukimo laikas pas specialistą yra :  $laukimas s<br>";	
+		echo "Sveiki,<b>$kliento_vardas</b> , Jūsų apytikslis laukimo laikas pas specialistą yra :  <b>".laikas($laukimas)."</b><br>";	
 		}
 		else
 		{
-		echo "Sveiki, $kliento_vardas, artimiausiu metu, jus pakviesime<br>";	
+		echo "Sveiki,<b>$kliento_vardas</b>, artimiausiu metu, jus pakviesime<br>";	
 		}		
 echo "Jūs esate eilėje ".kelintas("$kliento_vardas")." iš ".klientai()."<br>";
-echo "<a href='vp.php?klientas=$kliento_vardas&kodas=$kliento_kodas&v=trinti'>[Atšaukti apsilankymą]</a><br>";
+echo "<a href='laukia.php'>[Grįžti į švieslentę]</a> ";
+echo "<a href='vp.php?klientas=$kliento_vardas&kodas=$kliento_kodas&v=trinti'>[Atšaukti apsilankymą]</a> ";
 if(isset($_GET['v']) and $_GET['v'] == "trinti" )
 {
 mysqli_query($db,"DELETE FROM klientas WHERE klientas = '$kliento_vardas'");
@@ -92,7 +96,7 @@ header("location: index.php");
 }
 
 ?>
-
+</div>
 </body>
 </html>
 
