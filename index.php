@@ -20,27 +20,17 @@ $error = false ;
 <?php
 if (isset($_POST['name'])) {
     $min_name_lenght = 3;
-	if (strlen($_POST['name']) < $min_name_lenght or preg_match('/[^a-ž A-Ž\d]/', $_POST['name'])) {
-		$error = true;
-		echo "Įvyko klaida, kreipkitės telefonu";
-	}
-	elseif ($error != true) {
-		$row = mysqli_fetch_assoc(mysqli_query($db,"SELECT * FROM `vidurkis` WHERE id = '1'"));
-		$vidurkis = $row['vidurkis'];	
-		$laikas = time()+((mysqli_num_rows(mysqli_query($db,"SELECT * FROM klientas ORDER BY laikas ASC"))+1)*$vidurkis);
-		$name = $_POST['name'];
-		
-		$kodas = ((time()*2)/3)+4;
-		mysqli_query($db,"INSERT INTO laukimo_laikas (klientas,laukimas) VALUES ('$name','$laikas')");
-		$kliento_aptarnavimas = date('Y-m-d H:i:s');
-		mysqli_query($db,"INSERT INTO klientas (klientas,laikas) VALUES ('$name','$kliento_aptarnavimas')");
-		mysqli_query($db,"INSERT INTO vp (klientas,kodas) VALUES ('$name','$kodas')");
-		$name = str_replace(" ","%20",$name);
-		echo "Užregistruota sėkmingai.<br>Vartotojo panelės adresas: <a href=vp.php?klientas=$name&kodas=$kodas>[čia]</a>";
-		//header("location: /laukia.php");
-	
-	}
-	
+    if (strlen($_POST['name']) < $min_name_lenght or preg_match('/[^a-ž A-Ž\d]/', $_POST['name'])) {
+        $error = true;
+        echo "<br><font color=red>Įvyko klaida, kreipkitės telefonu</font><br>";
+    }
+    elseif ($error != true) {
+        $user= new User();
+        $user->create();
+        echo "<br><font color=green>Užregistruota sėkmingai.</font><br>Vartotojo panelės adresas: <a href=vp.php?klientas=".$user->id."&kodas=".$user->kodas.">[čia]</a><br>";
+    
+    }
+    
 }
 echo "<br>";
 echo "<a href='laukia.php'><button>Laukimo ekranas</button></a>";

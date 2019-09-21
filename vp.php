@@ -16,85 +16,81 @@
 
 include("config.php");
 
-if(isset($_GET['klientas']) and isset($_GET['kodas']))
-{
+if(isset($_GET['klientas']) and isset($_GET['kodas']) ) {
+    $klientas = $_GET['klientas'];
+    $info = new User();
+    $info->getUserData($_GET['klientas']); 
+    $info->getUserRowNumber($_GET['klientas']); 
 
-$id = $_GET['klientas'];
-$id = str_replace("%20"," ",$id);
-$kodas = $_GET['kodas'];
-$row = mysqli_fetch_assoc(mysqli_query($db,"SELECT * FROM `vp` WHERE klientas = '$id'"));
-$kliento_vardas = $row['klientas'];
+    
+    if ($_GET['kodas'] == $info->kodas) {
+        $laukimas =$info->laukimas-time();
+        if(empty($info->kelintas)) {
+        echo "Ačiū,<b>$info->klientas</b>, kad naudojatės mūsų paslaugomis.<br>";    
+        }
+        elseif($laukimas > 0) {
+        echo "Sveiki,<b>$info->klientas</b> , Jūsų apytikslis laukimo laikas pas specialistą yra :  <b>".laikas($laukimas)."</b><br>";    
+        }
+        elseif($laukimas < 0) {
+        echo "Sveiki,<b>$info->klientas</b>, artimiausiu metu, jus pakviesime<br>";    
+        }
+        echo "Jūs esate eilėje $info->kelintas iš $info->max<br>";
+        echo "<a href='laukia.php'>[Grįžti į švieslentę]</a> ";    
+        echo "<a href='vp.php?klientas=$klientas&kodas=$info->kodas&v=trinti'>[Atšaukti apsilankymą]</a> ";
+        
+        
+ 
+        if ($info->max > $info->kelintas) {
+        $asmuo = $info->kelintas+1;
+        $info1 = new User();
 
-$row = mysqli_fetch_assoc(mysqli_query($db,"SELECT * FROM `vp` WHERE klientas = '$id'"));
-$kliento_kodas= $row['kodas'];
+        $info1->getUserByRowNumber($asmuo);
+        echo "<a href='vp.php?klientas=$klientas&kodas=$info->kodas&v=velinti&kuo=$info1->kelintas1'>[Pavėlinti apsilankymą]</a>";
+        }
+        
+//Atšaukti apsilankymą
+        if (isset($_GET['v']) and $_GET['v']== "trinti") {
+            mysqli_query($db,"DELETE FROM klientas WHERE id = '$klientas'");
+            header("location: index.php");            
+        }
+//Atlikti keitimą
+        if (isset($_GET['v']) and $_GET['v']== "velinti") {
+            if($info->max == $info->kelintas ) {
+                echo "<br><b>Vėlinimas negalimas, esate paskutinis eilėje.</b>";
+            }
+        else {
+            $klientas = $_GET['klientas'];
+            $keitejas = $_GET['kuo'];
+            $patikrinimas = $_GET['kuo']-1;
+            if ($keitejas != $info1->kelintas1) {
+                echo "<br><b>Keitimas negalimas</b>";
+            }
+            else {
+                
+                $info1->getUserData($keitejas);
+                $pirmas[0] = $info->laukimas;
+                $pirmas[1] = $info->registracija;
+                $pirmas[2] = $info->klientas;
+                $pirmas[3] = $info->kodas;
+                
+                $antras[0] = $info1->laukimas;
+                $antras[1] = $info1->registracija;
+                $antras[2] = $info1->klientas;
+                $antras[3] = $info1->kodas;
+                
 
-if ($kliento_vardas == $id)
-{
-		if($kliento_kodas == $kodas)
-		{
-		$re = mysqli_fetch_assoc(mysqli_query($db,"SELECT * FROM `laukimo_laikas` where klientas = '$kliento_vardas' "));
-		$laukimas = $re['laukimas']-time();
-		if($laukimas > 0)
-		{
-		echo "Sveiki,<b>$kliento_vardas</b> , Jūsų apytikslis laukimo laikas pas specialistą yra :  <b>".laikas($laukimas)."</b><br>";	
-		}
-		else
-		{
-		echo "Sveiki,<b>$kliento_vardas</b>, artimiausiu metu, jus pakviesime<br>";	
-		}		
-echo "Jūs esate eilėje ".kelintas("$kliento_vardas")." iš ".klientai()."<br>";
-echo "<a href='laukia.php'>[Grįžti į švieslentę]</a> ";
-echo "<a href='vp.php?klientas=$kliento_vardas&kodas=$kliento_kodas&v=trinti'>[Atšaukti apsilankymą]</a> ";
-if(isset($_GET['v']) and $_GET['v'] == "trinti" )
-{
-mysqli_query($db,"DELETE FROM klientas WHERE klientas = '$kliento_vardas'");
-mysqli_query($db,"DELETE FROM vp WHERE klientas = '$kliento_vardas'");
-mysqli_query($db,"DELETE FROM laukimo_laikas WHERE klientas = '$kliento_vardas'");
-header("location: index.php");
-	
+                mysqli_query($db,"UPDATE klientas SET registracija='$antras[1]', laukimo_laikas = '$antras[0]' WHERE id = '$klientas'");
+                mysqli_query($db,"UPDATE klientas SET registracija='$pirmas[1]', laukimo_laikas = '$pirmas[0]' WHERE id = '$keitejas'");
+                header("location: vp.php?klientas=$klientas&kodas=$pirmas[3]");
+            }
+        }    
+        }        
+    }
+    else {
+                
+    }
+    
 }
-if(kelintas("$kliento_vardas") < klientai())
-{
-	$keitimo_vardas = klientas(kelintas("$kliento_vardas")+1);
-	echo "<a href='vp.php?klientas=$kliento_vardas&kodas=velinti&kuo=$keitimo_vardas'>[Pavėlinti apsilankymą]</a>";
-}
-
-}
-		elseif($kodas == "velinti")
-		{
-			if(kelintas("$kliento_vardas") == klientai() )
-			{
-				echo "Vėlinimas negalimas, esate paskutinis eilėje.";
-			}
-			elseif(kelintas("$kliento_vardas") < klientai() )
-			{
-			$keitimo_vardas = klientas(kelintas("$kliento_vardas")+1);
-			$vardas = $_GET['klientas'];
-			$keitimas = $_GET['kuo'];
-			if(kelintas("$keitimas") > kelintas("$vardas") )
-			{
-			$row = mysqli_fetch_assoc(mysqli_query($db,"SELECT id FROM `klientas` WHERE klientas = '$vardas'"));
-			$kliento_id = $row['id'];	
-			$row = mysqli_fetch_assoc(mysqli_query($db,"SELECT id FROM `klientas` WHERE klientas = '$keitimas'"));
-			$keitimo_id = $row['id'];	
-			mysqli_query($db,"UPDATE klientas SET klientas = '$vardas' WHERE id = '$keitimo_id '");
-			mysqli_query($db,"UPDATE klientas SET klientas = '$keitimas' WHERE id = '$kliento_id '");
-			header("location: vp.php?klientas=$vardas&kodas=$kliento_kodas");
-			
-			}
-
-			
-			}
-			
-		}
-
-}
-}
-else
-{
-header("location: index.php");	
-}
-
 ?>
 </div>
 </body>

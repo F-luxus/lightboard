@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Sep 18, 2019 at 04:19 PM
+-- Generation Time: 2019 m. Rgs 22 d. 00:07
 -- Server version: 10.1.41-MariaDB
 -- PHP Version: 7.3.8
 
@@ -25,105 +25,71 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
--- Table structure for table `klientas`
+-- Sukurta duomenų struktūra lentelei `klientas`
 --
 
 CREATE TABLE `klientas` (
   `id` int(11) NOT NULL,
-  `klientas` varchar(255) NOT NULL,
-  `laikas` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `klientas` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `registracija` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `kodas` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `laukimo_laikas` int(20) NOT NULL,
+  `aptarnautas` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL DEFAULT '0',
+  `priimtas` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL DEFAULT '0',
+  `sid` int(11) NOT NULL DEFAULT '0'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `laukimo_laikas`
---
-
-CREATE TABLE `laukimo_laikas` (
-  `id` int(11) NOT NULL,
-  `klientas` varchar(255) NOT NULL,
-  `laukimas` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `priimti`
---
-
-CREATE TABLE `priimti` (
-  `id` int(11) NOT NULL,
-  `kid` int(11) NOT NULL,
-  `klientas` varchar(255) NOT NULL,
-  `aptarnavo` varchar(255) NOT NULL,
-  `kada` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `reg` timestamp NOT NULL DEFAULT '0000-00-00 00:00:00'
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `specialistai`
+-- Sukurta duomenų struktūra lentelei `specialistai`
 --
 
 CREATE TABLE `specialistai` (
   `id` int(11) NOT NULL,
-  `vardas` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `vardas` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
--- Dumping data for table `specialistai`
+-- Sukurta duomenų kopija lentelei `specialistai`
 --
 
 INSERT INTO `specialistai` (`id`, `vardas`) VALUES
-(1, 'demo');
+(3, 'demo');
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `statistika`
+-- Sukurta duomenų struktūra lentelei `statistika`
 --
 
 CREATE TABLE `statistika` (
   `id` int(11) NOT NULL,
-  `aptarnavo` varchar(255) NOT NULL,
-  `klientas` varchar(255) NOT NULL,
-  `registracija` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+  `aptarnavo` int(11) NOT NULL,
+  `klientas` int(11) NOT NULL,
+  `registracijos_data` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `registracijos_laikas` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
   `laukimas` int(11) NOT NULL,
   `aptarnavimas` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `vidurkis`
+-- Sukurta duomenų struktūra lentelei `vidurkis`
 --
 
 CREATE TABLE `vidurkis` (
   `id` int(11) NOT NULL,
-  `vidurkis` int(11) NOT NULL,
-  `laukimas` int(20) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+  `vidurkis` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
--- Dumping data for table `vidurkis`
+-- Sukurta duomenų kopija lentelei `vidurkis`
 --
 
-INSERT INTO `vidurkis` (`id`, `vidurkis`, `laukimas`) VALUES
-(1, 90, 1568786242);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `vp`
---
-
-CREATE TABLE `vp` (
-  `id` int(11) NOT NULL,
-  `klientas` varchar(255) NOT NULL,
-  `kodas` varchar(255) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+INSERT INTO `vidurkis` (`id`, `vidurkis`) VALUES
+(1, 163);
 
 --
 -- Indexes for dumped tables
@@ -133,19 +99,8 @@ CREATE TABLE `vp` (
 -- Indexes for table `klientas`
 --
 ALTER TABLE `klientas`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `laukimo_laikas`
---
-ALTER TABLE `laukimo_laikas`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `priimti`
---
-ALTER TABLE `priimti`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `sid` (`sid`);
 
 --
 -- Indexes for table `specialistai`
@@ -157,18 +112,13 @@ ALTER TABLE `specialistai`
 -- Indexes for table `statistika`
 --
 ALTER TABLE `statistika`
-  ADD PRIMARY KEY (`id`);
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `aptarnavo` (`aptarnavo`);
 
 --
 -- Indexes for table `vidurkis`
 --
 ALTER TABLE `vidurkis`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `vp`
---
-ALTER TABLE `vp`
   ADD PRIMARY KEY (`id`);
 
 --
@@ -179,43 +129,25 @@ ALTER TABLE `vp`
 -- AUTO_INCREMENT for table `klientas`
 --
 ALTER TABLE `klientas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=97;
-
---
--- AUTO_INCREMENT for table `laukimo_laikas`
---
-ALTER TABLE `laukimo_laikas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
-
---
--- AUTO_INCREMENT for table `priimti`
---
-ALTER TABLE `priimti`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=67;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 
 --
 -- AUTO_INCREMENT for table `specialistai`
 --
 ALTER TABLE `specialistai`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `statistika`
 --
 ALTER TABLE `statistika`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=64;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=100;
 
 --
 -- AUTO_INCREMENT for table `vidurkis`
 --
 ALTER TABLE `vidurkis`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
-
---
--- AUTO_INCREMENT for table `vp`
---
-ALTER TABLE `vp`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=71;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
