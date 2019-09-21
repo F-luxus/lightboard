@@ -10,13 +10,17 @@ Kiekvienas esame susidūrę, su švieslentėmis tiek ligoninėse, bankuose, paš
 * **Klientas** gali pavėlinti vizitą arba jį atšaukti
 * **Specialistas** mato ir gali priimti klientus
 
+
 ### Sistemos išbandymas
 
 Sistemą galimą išbandyti per naršyklę kompiuteryje [adresu](https://nfq-siauliai.us.lt/lightboard/)
 
 ```
-Pradinė versija nėra pritaikyta mobiliojo telefono ekranui
+Sistemos versijos išvaizda prisitaiko prie mob telefono ekrano.
 ```
+### Change Log
+* 2019 09 22 Supaprastintas sistemos kodas
+* 2019 09 20 Patobulinta versija telefonams
 
 ### Autorius
 
