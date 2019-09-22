@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 2019 m. Rgs 22 d. 00:07
+-- Generation Time: 2019 m. Rgs 22 d. 17:40
 -- Server version: 10.1.41-MariaDB
 -- PHP Version: 7.3.8
 
@@ -47,15 +47,16 @@ CREATE TABLE `klientas` (
 
 CREATE TABLE `specialistai` (
   `id` int(11) NOT NULL,
-  `vardas` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL
+  `vardas` varchar(255) COLLATE utf8_lithuanian_ci NOT NULL,
+  `kodas` int(10) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_lithuanian_ci;
 
 --
 -- Sukurta duomenų kopija lentelei `specialistai`
 --
 
-INSERT INTO `specialistai` (`id`, `vardas`) VALUES
-(3, 'demo');
+INSERT INTO `specialistai` (`id`, `vardas`, `kodas`) VALUES
+(3, 'demo', 159);
 
 -- --------------------------------------------------------
 

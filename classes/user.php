@@ -1,7 +1,7 @@
 <?php
 
 class User {
-        public $kodas;
+        public $kodas,$pass;
         public $name, $kelintas, $kelintas1, $max, $kuris, $vardas;
         public $klientas, $registracija, $laukimas, $aptarnautas, $priimtas, $specialistas;
         public function create() {
@@ -69,6 +69,7 @@ class User {
             $resu0="SELECT * FROM specialistai where vardas='$vardas'";
             $req0=mysqli_query($db,$resu0);
             while( $raw0=mysqli_fetch_assoc($req0)) {
+				$this->pass=$raw0['kodas'];
                 return $raw0['id'];
             }        
         }

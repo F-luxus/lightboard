@@ -16,15 +16,27 @@ if (!isset($_GET['id'])){
     <form action="admin.php?id=login" method="post">
     <label>Įveskite specialisto vardą: 
     <input type=text name="name" autocomplete="off" pattern="[a-žA-Ž]+" required placeholder="Specialisto vardas"></input></label>
+    <label>Įveskite specialisto kodą :  <input type=password name="pass" autocomplete="off" pattern="[0-9]+" required placeholder="Specialisto kodas"></input></label>
     <button>Prisijungti</button><br>
     ';    
 }
 elseif ($_GET['id'] == 'login' ) {
     
-    if (is_numeric($info->checkName($_POST['name']))) {
+    if (is_numeric($info->checkName($_POST['name'])) and $info->pass == $_POST['pass']) {
     $_SESSION["specialistas"] = $_POST['name'];
     header("location: admin.php?id=klientai");
-    }    
+    }
+    else {
+	$vardas = $_POST['name'];
+     echo "
+	<form action='admin.php?id=login' method='post'>
+    <label>Įveskite specialisto vardą: 
+    <input type=text name='name' autocomplete='off' pattern='[a-žA-Ž]+' required value='$vardas' placeholder='Specialisto vardas'></input></label>
+    <label>Įveskite specialisto kodą :  <input type=password name='pass' autocomplete='off' pattern='[0-9]+' required placeholder='Specialisto kodas'></input></label>
+    <button>Prisijungti</button><br>
+	 ";
+		echo "<font color=red>Blogi duomenys</font>";
+    }	
 }
 elseif ($_GET['id']== "klientai") {
     
