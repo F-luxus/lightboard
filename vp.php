@@ -29,12 +29,14 @@ if(isset($_GET['klientas']) and isset($_GET['kodas']) ) {
         echo "Ačiū,<b>$info->klientas</b>, kad naudojatės mūsų paslaugomis.<br>";    
         }
         elseif($laukimas > 0) {
-        echo "Sveiki,<b>$info->klientas</b> , Jūsų apytikslis laukimo laikas pas specialistą yra :  <b>".laikas($laukimas)."</b><br>";    
+        echo "Sveiki,<b>$info->klientas</b> , Jūsų apytikslis laukimo laikas pas specialistą yra :  <b>".laikas($laukimas)."</b><br>";  
+		echo "Jūs esate eilėje $info->kelintas iš $info->max<br>";		
         }
         elseif($laukimas < 0) {
-        echo "Sveiki,<b>$info->klientas</b>, artimiausiu metu, jus pakviesime<br>";    
+        echo "Sveiki,<b>$info->klientas</b>, artimiausiu metu, jus pakviesime<br>";   
+		echo "Jūs esate eilėje $info->kelintas iš $info->max<br>";		
         }
-        echo "Jūs esate eilėje $info->kelintas iš $info->max<br>";
+        
         echo "<a href='laukia.php'>[Grįžti į švieslentę]</a> ";    
         echo "<a href='vp.php?klientas=$klientas&kodas=$info->kodas&v=trinti'>[Atšaukti apsilankymą]</a> ";
         

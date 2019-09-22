@@ -33,8 +33,8 @@ $l = 1;
 while ($row = mysqli_fetch_assoc($m)) {
     $klientas = $row['klientas'];
     $kliento_id = $row['id'];
-    if($l >2) {
-        $i = $l-1;
+    if($l >1) {
+        $i = $l;
         echo "<b>$i.</b> $klientas<br>";        
     }
     $l++;        
